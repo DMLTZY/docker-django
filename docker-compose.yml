@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=dj_demo.settings
+    volumes:
+      - ./dj_demo:/code/dj_demo
+    ports:
+      - "8005:8001"
+    depends_on:
+      - db
+    # wait-for.sh can ensure migration and running after mysql initialized
+    # reference https://docs.docker.com/compose/startup-order/
+    command: sh -c "/code/wait-for.sh db:3306 --timeout=60 -- python manage.py migrate;python manage.py runserver 0.0.0.0:8001"
+  db:
+    image: daocloud.io/library/mysql:5.7.18
+    environment:
+      # set root user only access by localhost(in docker),
+      # if you want access database from your host machine, comment next line
+      - MYSQL_ROOT_HOST=localhost
+      - MYSQL_ROOT_PASSWORD=djangodockermysqlroot
+      # create new user, password and database
+      - MYSQL_USER=djangodocker
+      - MYSQL_PASSWORD=djangodocker
+      - MYSQL_DATABASE=django_docker
+    volumes:
+      - ./mysql/data:/var/lib/mysql/
+    ports:
+      - "8009:3306"
