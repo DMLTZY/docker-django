@@ -20,7 +20,9 @@ $ docker-compose up
 ```
 
 wait a minute...
+
 if you can see below, it success
+
 ```bash
 web_1  | Django version 1.8.7, using settings 'dj_demo.settings'
 web_1  | Starting development server at http://0.0.0.0:8001/
@@ -30,10 +32,15 @@ web_1  | Quit the server with CONTROL-C.
 test [http://localhost:8005/](http://localhost:8005/)
 
 connect database with
+
 `host:127.0.0.1`
+
 `port:8009`
+
 `username:djangodocker`
+
 `password:djangodocker`
+
 `database:django_docker`
 
 ## Tree
@@ -42,20 +49,20 @@ connect database with
 .
 ├── Dockerfile
 ├── README.md
-├── dj_demo			 <-- replace with your app
+├── dj_demo			<-- replace with your app
 │   ├── dj_demo
 │   └── manage.py
 ├── docker-compose.yml
 ├── mysql
 │   └── data			<-- will save database from docker
 ├── requirements.txt
-└── wait-for.sh		 <-- from https://github.com/Eficode/wait-for
+└── wait-for.sh			<-- from https://github.com/Eficode/wait-for
 ```
 
 ## Attentions
 
 1. I use alpine image except mysql.
-2. I change the [images source](https://store.docker.com/) that's slow in my country.
+2. I change the [images source](https://store.docker.com/) that's slow in my country. :joy:
 
 ## Basic commands
 
@@ -82,6 +89,7 @@ connect database with
 	```bash
     $ docker run --rm --name=container_name -it dockerdjango_web sh
 	```
+
     `$ exit`or`ctrl+d`to back to your host terminal
 
 5. Run a command in a running container
@@ -89,7 +97,25 @@ connect database with
 	```bash
     $ docker exec -it bf72189a3c51 sh
     ```
+
     you can find like `bf72189a3c51` in `$ docker ps` as CONTAINER ID
+
+6. create customed image with Dockerfile
+
+	```bash
+    $ cd docker-djangno
+    $ docker build --rm -t pymysqlclient .  # point means current directory
+    $ docker images  # check
+    ```
+
+7. 发布镜像到docker hub
+
+	```bash
+    $ docker login  # login to your docker hub
+    $ docker tag dockerdjango_web dmltzy/dockerdjango
+    $ docker images  # check
+    $ docker push dmltzy/dockerdjango  # like git push
+    ```
 
 ## Tips
 
