@@ -123,6 +123,7 @@ connect database with
 
 	```bash
     $ docker ps -a | awk 'NR>1 { print $1 }' | xargs docker rm
+    $ docker ps -aq | xargs docker rm
 	```
 
 2. delete specific images
